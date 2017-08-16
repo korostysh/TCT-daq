@@ -1,0 +1,23 @@
+#ifndef TCTCONTROLLER_H
+#define TCTCONTROLLER_H
+#include "vector"
+#include "include/Definition.h"
+#include "include/Instrument.h"
+#include "instruments/include/TranslationStage.h"
+
+class TCTController
+{
+public:
+    TCTController();
+    ~TCTController();
+    void Initialize(std::vector<DAQConfig *> *pDAQConfigs);
+
+    TranslationStage* GetTranslationStage();
+
+private:
+    std::vector<DAQConfig*> *fDAQConfigs = 0;
+    std::vector<Instrument*> *fInstruments = 0;
+
+};
+
+#endif // TCTCONTROLLER_H
