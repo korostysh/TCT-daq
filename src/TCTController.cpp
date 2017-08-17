@@ -27,7 +27,10 @@ void TCTController::Initialize(std::vector<DAQConfig *> *pDAQConfigs)
                 std::string pName = config_word->name;
                 pInstrument = (Instrument*) new TranslationStage(pConnectionType,pAddress,pName);
             }
-            if(pInstrument != 0) fInstruments->push_back(pInstrument);
+            if(pInstrument != 0) {
+                pInstrument->Initialize();
+                fInstruments->push_back(pInstrument);
+            }
         }
 
     }

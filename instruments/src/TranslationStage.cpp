@@ -5,6 +5,11 @@ TranslationStage::TranslationStage(ConnectionType pConectionType, std::string pA
 {
     ;
 }
+
+void TranslationStage::Initialize() {
+    SetStatus(StatusType::Ready);
+}
+
 //Getters
 PositionType TranslationStage::GetPosition(){
     return fPosition;

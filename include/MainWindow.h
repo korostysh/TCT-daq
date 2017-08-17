@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QToolButton>
 #include "include/Definition.h"
 #include "include/TCTController.h"
 #include "include/Convertor.h"
@@ -32,13 +33,23 @@ private slots:
 
     void on_MoveZPlus_clicked();
 
-    void on_Initialize_clicked();
+    void on_initialize_clicked();
+
+    void on_load_config_clicked();
 
 private:
     Ui::MainWindow *ui;
 
     TCTController *fTCTController;
     std::vector<DAQConfig*> *fDAQConfigs = 0;
+    std::map<std::string,QToolButton*> fStatuses;
+
+    void LoadConfig();
+    void FillHardware();
+    void UpdateStatuses();
+    std::string GetConnectionTypeString(ConnectionType pConnectionType);
+    std::string GetInstrumentTypeString(InstrumentType pInstrumentType);
+
 
 };
 

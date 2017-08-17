@@ -12,6 +12,7 @@ public:
     ~TCTController();
     void Initialize(std::vector<DAQConfig *> *pDAQConfigs);
 
+    const std::vector<Instrument*>* GetInstruments() { return fInstruments; }
     TranslationStage* GetTranslationStage();
 
 private:

@@ -12,6 +12,9 @@ private:
 
 public:
     TranslationStage(ConnectionType pConectionType, std::string pAddress, std::string pName);
+    ~TranslationStage() {}
+    void Initialize();
+
     //Getters
     PositionType     GetPosition();
     StageSpeedType   GetStageSpeed();
