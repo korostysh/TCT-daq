@@ -4,7 +4,7 @@
 #include "QString"
 
 enum class ConnectionType {GPIB, USB, TCPIP, VICP, UNKNOWN};
-enum class InstrumentType {VoltageSource, Osciloscope, TranslationStage, RotationStage, Laser, TemperatureController,Unknown};
+enum class InstrumentType {VoltageSource, Oscilloscope, TranslationStage, RotationStage, Laser, TemperatureController,Unknown};
 enum class StatusType {Uninitialized, Ready, Error};
 
 struct PositionType{

@@ -9,6 +9,8 @@
 #include <sstream>
 #include "instruments/include/TranslationStage.h"
 #include "include/Instrument.h"
+#include <QFileDialog>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,8 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     fDAQConfigs = new std::vector<DAQConfig*>;
     fTCTController = new TCTController;
-
-    LoadConfig();
+    QFile *fConfFile = new QFile("BaseConfig.txt");
+    LoadConfig(fConfFile);
+    delete fConfFile;
 
 }
 
@@ -29,20 +32,19 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::LoadConfig()
+void MainWindow::LoadConfig(QFile *BaseConfig)
 {
     Convertor convert;
-    QFile BaseConfig("BaseConfig.txt");
 
-    if(BaseConfig.open(QIODevice::ReadOnly)){
+    if(BaseConfig->open(QIODevice::ReadOnly)){
         ui->DialogWindow->setText("File Opened");
 
         for(auto config_word: *fDAQConfigs) delete config_word;
         fDAQConfigs->clear();
 
-        while (!BaseConfig.atEnd())
+        while (!BaseConfig->atEnd())
         {
-            QString line = BaseConfig.readLine();
+            QString line = BaseConfig->readLine();
 
             if (line.length() == 0) continue;
             if (line[0] == '/') continue;
@@ -51,13 +53,17 @@ void MainWindow::LoadConfig()
             if (line == "[Instrument]\n")
             {
                 DAQConfig *cConfig = new DAQConfig;
-                line = BaseConfig.readLine();
+                line = BaseConfig->readLine();
                 cConfig->instrument_type = convert.InstrumentStringToEnum(line);
-                line = BaseConfig.readLine();
+                line = BaseConfig->readLine();
                 cConfig->connection_type = convert.ConnectionStringToEnum(line);
-                line = BaseConfig.readLine();
+                line = BaseConfig->readLine();
                 cConfig->address = line.toUtf8().constData();
-                line = BaseConfig.readLine();
+                line = BaseConfig->readLine();
+                if (cConfig->instrument_type == InstrumentType::Oscilloscope){
+                    line = line.left(line.length()-5);
+                    //line.insert(line.length(), "/n");
+                }
                 cConfig->name = line.toUtf8().constData();
                 fDAQConfigs->push_back(cConfig);
 
@@ -73,8 +79,26 @@ void MainWindow::LoadConfig()
     }
 }
 
+
+void MainWindow::ClearSoftware(){
+    QLayout *old_layout = ui->groupStatus->layout();
+    QLayout *sublayout;
+    QWidget * widget;
+    QLayoutItem *item;
+    while ((item = old_layout->takeAt(0))) {
+        if ((sublayout = item->layout()) != 0) {delete sublayout;}
+        else if ((widget = item->widget()) != 0) {widget->hide(); delete widget;}
+        else {delete item;}
+    }
+
+    // then finally
+    delete old_layout;
+}
+
+
 void MainWindow::FillHardware()
 {
+
 
     QVBoxLayout *general_layout = new QVBoxLayout;
     fStatuses.clear();
@@ -187,8 +211,8 @@ std::string MainWindow::GetInstrumentTypeString(InstrumentType pInstrumentType)
         case InstrumentType::VoltageSource:
             type = "VoltageSource";
             break;
-        case InstrumentType::Osciloscope:
-            type = "Osciloscope";
+        case InstrumentType::Oscilloscope:
+            type = "Oscilloscope";
             break;
         case InstrumentType::TranslationStage:
             type = "TranslationStage";
@@ -211,6 +235,8 @@ std::string MainWindow::GetInstrumentTypeString(InstrumentType pInstrumentType)
     }
     return type;
 }
+
+
 
 
 void MainWindow::on_SetCoordinate_clicked()
@@ -264,9 +290,22 @@ void MainWindow::on_SetTranslationStageSpeed_clicked()
 
 }
 
+void MainWindow::EnableButtons(){
+    ui->MoveXMinus->setEnabled(true);
+    ui->MoveYMinus->setEnabled(true);
+    ui->MoveZMinus->setEnabled(true);
+    ui->MoveXPlus->setEnabled(true);
+    ui->MoveYPlus->setEnabled(true);
+    ui->MoveZPlus->setEnabled(true);
+    ui->SetCoordinate->setEnabled(true);
+    ui->SetTranslationStageSpeed->setEnabled(true);
+    ui->start_daq->setEnabled(true);
+}
+
 void MainWindow::on_MoveXMinus_clicked()
 {
-
+     ui->XAxisPosition->setValue(ui->XAxisPosition->value()-ui->XStep->value());
+     ui->SetCoordinate->clicked(true);
 }
 
 void MainWindow::on_MoveXPlus_clicked()
@@ -275,9 +314,19 @@ void MainWindow::on_MoveXPlus_clicked()
     ui->SetCoordinate->clicked(true);
 }
 
+void MainWindow::on_MoveYMinus_clicked()
+{
+    ui->YAxisPosition->setValue(ui->YAxisPosition->value()-ui->YStep->value());
+    ui->SetCoordinate->clicked(true);
+}
 void MainWindow::on_MoveYPlus_clicked()
 {
     ui->YAxisPosition->setValue(ui->YAxisPosition->value()+ui->YStep->value());
+    ui->SetCoordinate->clicked(true);
+}
+void MainWindow::on_MoveZMinus_clicked()
+{
+    ui->ZAxisPosition->setValue(ui->ZAxisPosition->value()-ui->ZStep->value());
     ui->SetCoordinate->clicked(true);
 }
 
@@ -291,9 +340,117 @@ void MainWindow::on_initialize_clicked()
 {
     fTCTController->Initialize(fDAQConfigs);
     UpdateStatuses();
+    EnableButtons();
+
 }
 
 void MainWindow::on_load_config_clicked()
 {
-    LoadConfig();
+    ClearSoftware();
+    fDAQConfigs->clear();
+    fStatuses.clear();
+    UpdateStatuses();
+    QString filename = QFileDialog::getOpenFileName();
+    if (filename == "") return;
+
+    QFile *F = new QFile(filename, this);
+    LoadConfig(F);
+    delete F;
+}
+
+
+
+void MainWindow::on_XStart_valueChanged(double arg1)
+{
+    float XFinal;
+    std::ostringstream ss;
+    XFinal = ui->XStart->value()+ui->XStepDAQ->value()*ui->XStepNum->value();
+    ss << XFinal;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->XFinal->setText(QStr);
+}
+
+void MainWindow::on_XStepDAQ_valueChanged(double arg1)
+{
+    float XFinal;
+    std::ostringstream ss;
+    XFinal = ui->XStart->value()+ui->XStepDAQ->value()*ui->XStepNum->value();
+    ss << XFinal;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->XFinal->setText(QStr);
+
+}
+
+void MainWindow::on_XStepNum_valueChanged(double arg1)
+{
+    float XFinal;
+    std::ostringstream ss;
+    XFinal = ui->XStart->value()+ui->XStepDAQ->value()*ui->XStepNum->value();
+    ss << XFinal;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->XFinal->setText(QStr);
+}
+
+void MainWindow::on_YStart_valueChanged(double arg1)
+{
+    float YFinal;
+    std::ostringstream ss;
+    YFinal = ui->YStart->value()+ui->YStepDAQ->value()*ui->YStepNum->value();
+    ss << YFinal;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->YFinal->setText(QStr);
+
+}
+
+void MainWindow::on_YStepDAQ_valueChanged(double arg1)
+{
+    float YFinal;
+    std::ostringstream ss;
+    YFinal = ui->YStart->value()+ui->YStepDAQ->value()*ui->YStepNum->value();
+    ss << YFinal;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->YFinal->setText(QStr);
+
+}
+
+void MainWindow::on_YStepNum_valueChanged(double arg1)
+{
+    float YFinal;
+    std::ostringstream ss;
+    YFinal = ui->YStart->value()+ui->YStepDAQ->value()*ui->YStepNum->value();
+    ss << YFinal;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->YFinal->setText(QStr);
+
+}
+
+void MainWindow::on_ZStart_valueChanged(double arg1)
+{
+    float ZFinal;
+    std::ostringstream ss;
+    ZFinal = ui->ZStart->value()+ui->ZStepDAQ->value()*ui->ZStepNum->value();
+    ss << ZFinal;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->ZFinal->setText(QStr);
+
+}
+
+void MainWindow::on_ZStepDAQ_valueChanged(double arg1)
+{
+    float ZFinal;
+    std::ostringstream ss;
+    ZFinal = ui->ZStart->value()+ui->ZStepDAQ->value()*ui->ZStepNum->value();
+    ss << ZFinal;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->ZFinal->setText(QStr);
+}
+
+void MainWindow::on_ZStepNum_valueChanged(double arg1)
+{
+    float ZFinal;
+    std::ostringstream ss;
+    ZFinal = ui->ZStart->value()+ui->ZStepDAQ->value()*ui->ZStepNum->value();
+    ss << ZFinal;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->ZFinal->setText(QStr);
 }

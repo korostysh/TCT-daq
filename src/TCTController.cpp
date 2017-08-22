@@ -20,12 +20,17 @@ void TCTController::Initialize(std::vector<DAQConfig *> *pDAQConfigs)
         for(auto config_word : *fDAQConfigs) {
             Instrument *pInstrument = 0;
 
+            ConnectionType pConnectionType = config_word->connection_type;
+            std::string pAddress = config_word->address;
+            std::string pName = config_word->name;
+
             if (config_word->instrument_type == InstrumentType::TranslationStage) {
                 //init translation stage
-                ConnectionType pConnectionType = config_word->connection_type;
-                std::string pAddress = config_word->address;
-                std::string pName = config_word->name;
                 pInstrument = (Instrument*) new TranslationStage(pConnectionType,pAddress,pName);
+            }
+            else if (config_word->instrument_type == InstrumentType::Oscilloscope) {
+                //init oscilloscope
+                pInstrument = (Instrument*) new Oscilloscope(pConnectionType,pAddress,pName);
             }
             if(pInstrument != 0) {
                 pInstrument->Initialize();
@@ -48,6 +53,15 @@ TranslationStage* TCTController::GetTranslationStage() {
     for (auto pInstrument : *fInstruments) {
         if (pInstrument->GetInstrumentType() == InstrumentType::TranslationStage) {
             return (TranslationStage*)pInstrument;
+        }
+    }
+    return 0;
+}
+
+Oscilloscope* TCTController::GetOscilloscope() {
+    for (auto pInstrument : *fInstruments) {
+        if (pInstrument->GetInstrumentType() == InstrumentType::Oscilloscope) {
+            return (Oscilloscope*)pInstrument;
         }
     }
     return 0;

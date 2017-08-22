@@ -6,6 +6,9 @@
 #include "include/Definition.h"
 #include "include/TCTController.h"
 #include "include/Convertor.h"
+#include "QFile"
+#include "Python.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -37,6 +40,28 @@ private slots:
 
     void on_load_config_clicked();
 
+    void on_MoveYMinus_clicked();
+
+    void on_MoveZMinus_clicked();
+
+    void on_XStart_valueChanged(double arg1);
+
+    void on_XStepDAQ_valueChanged(double arg1);
+
+    void on_XStepNum_valueChanged(double arg1);
+
+    void on_YStart_valueChanged(double arg1);
+
+    void on_YStepDAQ_valueChanged(double arg1);
+
+    void on_YStepNum_valueChanged(double arg1);
+
+    void on_ZStart_valueChanged(double arg1);
+
+    void on_ZStepDAQ_valueChanged(double arg1);
+
+    void on_ZStepNum_valueChanged(double arg1);
+
 private:
     Ui::MainWindow *ui;
 
@@ -44,11 +69,14 @@ private:
     std::vector<DAQConfig*> *fDAQConfigs = 0;
     std::map<std::string,QToolButton*> fStatuses;
 
-    void LoadConfig();
+    void LoadConfig(QFile *BaseConfig);
     void FillHardware();
+    void ClearSoftware();
     void UpdateStatuses();
+
     std::string GetConnectionTypeString(ConnectionType pConnectionType);
     std::string GetInstrumentTypeString(InstrumentType pInstrumentType);
+    void EnableButtons();
 
 
 };

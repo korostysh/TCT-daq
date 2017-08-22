@@ -29,7 +29,8 @@ SOURCES += \
     src/Instrument.cpp \
     instruments/src/TranslationStage.cpp \
     src/TCTController.cpp \
-    src/Convertor.cpp
+    src/Convertor.cpp \
+    instruments/src/Oscilloscope.cpp
 
 HEADERS += \
         include/MainWindow.h \
@@ -37,7 +38,8 @@ HEADERS += \
     instruments/include/TranslationStage.h \
     include/TCTController.h \
     include/Definition.h \
-    include/Convertor.h
+    include/Convertor.h \
+    instruments/include/Oscilloscope.h
 
 FORMS += \
         forms/MainWindow.ui

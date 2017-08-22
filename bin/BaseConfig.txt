@@ -3,3 +3,9 @@ TranslationStage
 USB
 192.76.172.134
 something
+[Instrument]
+Oscilloscope
+VICP
+192.76.172.134
+WaveForm1111
+
