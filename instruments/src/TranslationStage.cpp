@@ -19,6 +19,15 @@ StageSpeedType TranslationStage::GetStageSpeed(){
     return fStageSpeed;
 }
 
+PositionNumofSteps TranslationStage::GetPositionNumofSteps(){
+    return fPositionNumofSteps;
+}
+
+PositionStep TranslationStage::GetPositionStep(){
+    return fPositionStep;
+}
+
+
 //Setters
 void TranslationStage::SetPosition(PositionType pPosition){
     fPosition = pPosition;
@@ -26,4 +35,12 @@ void TranslationStage::SetPosition(PositionType pPosition){
 
 void TranslationStage::SetStageSpeed(StageSpeedType pStageSpeed){
     fStageSpeed = pStageSpeed;
+}
+
+void TranslationStage::SetPositionNumofSteps(PositionNumofSteps pPositionNumofSteps){
+    fPositionNumofSteps = pPositionNumofSteps;
+}
+
+void TranslationStage::SetPositionStep(PositionStep pPositionStep){
+    fPositionStep = pPositionStep;
 }

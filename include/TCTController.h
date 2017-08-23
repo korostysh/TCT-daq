@@ -5,6 +5,7 @@
 #include "include/Instrument.h"
 #include "instruments/include/TranslationStage.h"
 #include "instruments/include/Oscilloscope.h"
+#include "instruments/include/VoltageSource.h"
 
 class TCTController
 {
@@ -16,6 +17,8 @@ public:
     const std::vector<Instrument*>* GetInstruments() { return fInstruments; }
     TranslationStage* GetTranslationStage();
     Oscilloscope* GetOscilloscope();
+    VoltageSource* GetVoltageSource1();
+    VoltageSource* GetVoltageSource2();
 
 private:
     std::vector<DAQConfig*> *fDAQConfigs = 0;

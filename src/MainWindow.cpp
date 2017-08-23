@@ -37,7 +37,7 @@ void MainWindow::LoadConfig(QFile *BaseConfig)
     Convertor convert;
 
     if(BaseConfig->open(QIODevice::ReadOnly)){
-        ui->DialogWindow->setText("File Opened");
+
 
         for(auto config_word: *fDAQConfigs) delete config_word;
         fDAQConfigs->clear();
@@ -50,7 +50,7 @@ void MainWindow::LoadConfig(QFile *BaseConfig)
             if (line[0] == '/') continue;
             if (line[0] == '\n') continue;
 
-            if (line == "[Instrument]\n")
+            if (line == "[TranslationStage]\n")
             {
                 DAQConfig *cConfig = new DAQConfig;
                 line = BaseConfig->readLine();
@@ -67,16 +67,14 @@ void MainWindow::LoadConfig(QFile *BaseConfig)
                 cConfig->name = line.toUtf8().constData();
                 fDAQConfigs->push_back(cConfig);
 
+
                 continue;
             }
         }
 
         FillHardware();
     }
-    else
-    {
-        ui->DialogWindow->setText("Error: config file not found");
-    }
+
 }
 
 
@@ -208,7 +206,10 @@ std::string MainWindow::GetInstrumentTypeString(InstrumentType pInstrumentType)
 {
     std::string type = "Unkwnown";
     switch (pInstrumentType) {
-        case InstrumentType::VoltageSource:
+        case InstrumentType::VoltageSource1:
+            type = "VoltageSource";
+            break;
+        case InstrumentType::VoltageSource2:
             type = "VoltageSource";
             break;
         case InstrumentType::Oscilloscope:
@@ -253,8 +254,8 @@ void MainWindow::on_SetCoordinate_clicked()
     ss << "X position = " << pStage->GetPosition().x << "   ";
     ss << "Y position = " << pStage->GetPosition().y << "   ";
     ss << "Z position = " << pStage->GetPosition().z << "   ";
-    QString QStr = QString::fromStdString(ss.str());
-    ui->DialogWindow->setText(QStr);
+
+
 }
 
 void MainWindow::on_SetTranslationStageSpeed_clicked()
@@ -284,8 +285,8 @@ void MainWindow::on_SetTranslationStageSpeed_clicked()
     ss << "Y axis speed = " << pStage->GetStageSpeed().ySpeed << "   ";
     ss << "Z axis speed = " << pStage->GetStageSpeed().zSpeed << "   ";
 
-    QString QStr = QString::fromStdString(ss.str());
-    ui->DialogWindow->setText(QStr);
+
+
 
 
 }
@@ -453,4 +454,70 @@ void MainWindow::on_ZStepNum_valueChanged(double arg1)
     ss << ZFinal;
     QString QStr = QString::fromStdString(ss.str());
     ui->ZFinal->setText(QStr);
+}
+
+void MainWindow::on_Source1Start_valueChanged(double arg1)
+{
+    float Source1;
+    std::ostringstream ss;
+    Source1 = ui->Source1Start->value()+ui->Source1Step->value()*ui->Source1NumofSteps->value();
+    ss << Source1;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->Source1Final->setText(QStr);
+
+}
+
+void MainWindow::on_Source1Step_valueChanged(double arg1)
+{
+    float Source1;
+    std::ostringstream ss;
+    Source1 = ui->Source1Start->value()+ui->Source1Step->value()*ui->Source1NumofSteps->value();
+    ss << Source1;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->Source1Final->setText(QStr);
+
+}
+
+void MainWindow::on_Source1NumofSteps_valueChanged(double arg1)
+{
+    float Source1;
+    std::ostringstream ss;
+    Source1 = ui->Source1Start->value()+ui->Source1Step->value()*ui->Source1NumofSteps->value();
+    ss << Source1;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->Source1Final->setText(QStr);
+}
+
+
+
+
+
+void MainWindow::on_Source2Start_valueChanged(double arg1)
+{
+    float Source2;
+    std::ostringstream ss;
+    Source2 = ui->Source2Start->value()+ui->Source2Step->value()*ui->Source2NumofSteps->value();
+    ss << Source2;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->Source2Final->setText(QStr);
+}
+
+void MainWindow::on_Source2Step_valueChanged(double arg1)
+{
+    float Source2;
+    std::ostringstream ss;
+    Source2 = ui->Source2Start->value()+ui->Source2Step->value()*ui->Source2NumofSteps->value();
+    ss << Source2;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->Source2Final->setText(QStr);
+}
+
+void MainWindow::on_Source2NumofSteps_valueChanged(double arg1)
+{
+    float Source2;
+    std::ostringstream ss;
+    Source2 = ui->Source2Start->value()+ui->Source2Step->value()*ui->Source2NumofSteps->value();
+    ss << Source2;
+    QString QStr = QString::fromStdString(ss.str());
+    ui->Source2Final->setText(QStr);
 }

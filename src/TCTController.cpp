@@ -1,5 +1,7 @@
 #include "include/TCTController.h"
 #include "instruments/include/TranslationStage.h"
+#include "instruments/include/Oscilloscope.h"
+#include "instruments/include/VoltageSource.h"
 #include "include/Definition.h"
 
 TCTController::TCTController()
@@ -31,6 +33,14 @@ void TCTController::Initialize(std::vector<DAQConfig *> *pDAQConfigs)
             else if (config_word->instrument_type == InstrumentType::Oscilloscope) {
                 //init oscilloscope
                 pInstrument = (Instrument*) new Oscilloscope(pConnectionType,pAddress,pName);
+            }
+            else if (config_word->instrument_type == InstrumentType::VoltageSource1) {
+                //init voltagesource
+                pInstrument = (Instrument*) new VoltageSource(pConnectionType,pAddress,pName);
+            }
+            else if (config_word->instrument_type == InstrumentType::VoltageSource2) {
+                //init voltagesource
+                pInstrument = (Instrument*) new VoltageSource(pConnectionType,pAddress,pName);
             }
             if(pInstrument != 0) {
                 pInstrument->Initialize();
@@ -64,6 +74,26 @@ Oscilloscope* TCTController::GetOscilloscope() {
             return (Oscilloscope*)pInstrument;
         }
     }
+    return 0;
+}
+
+VoltageSource* TCTController::GetVoltageSource1() {
+    for (auto pInstrument : *fInstruments) {
+        if (pInstrument->GetInstrumentType() == InstrumentType::VoltageSource1) {
+            return (VoltageSource*)pInstrument;
+        }
+    }
+
+    return 0;
+}
+
+VoltageSource* TCTController::GetVoltageSource2() {
+    for (auto pInstrument : *fInstruments) {
+        if (pInstrument->GetInstrumentType() == InstrumentType::VoltageSource2) {
+            return (VoltageSource*)pInstrument;
+        }
+    }
+
     return 0;
 }
 

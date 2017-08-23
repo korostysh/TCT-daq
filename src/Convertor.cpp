@@ -16,7 +16,8 @@ ConnectionType Convertor::ConnectionStringToEnum(QString string){
 }
 
 InstrumentType Convertor::InstrumentStringToEnum(QString string){
-    if (string == "VoltageSource\n"){ InstrumentStringConvert = InstrumentType::VoltageSource;}
+    if (string == "VoltageSource1\n"){ InstrumentStringConvert = InstrumentType::VoltageSource1;}
+    else if (string == "VoltageSource2\n"){ InstrumentStringConvert = InstrumentType::VoltageSource2;}
     else if (string == "Oscilloscope\n"){ InstrumentStringConvert = InstrumentType::Oscilloscope;}
     else if (string == "TranslationStage\n"){ InstrumentStringConvert = InstrumentType::TranslationStage;}
     else if (string == "RotationStage\n") {InstrumentStringConvert = InstrumentType::RotationStage;}

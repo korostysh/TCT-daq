@@ -7,11 +7,6 @@ something
 Oscilloscope
 VICP
 192.76.172.134
-WaveForm1111
-[Instrument]
-VoltageSource
-USB
-192.76.172.134
-KEITHLEY
+WaveForm
 
 

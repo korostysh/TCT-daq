@@ -22,7 +22,7 @@ public:
 
 
 
-private slots:
+private Q_SLOTS:
 
     void on_SetCoordinate_clicked();
 
@@ -61,6 +61,20 @@ private slots:
     void on_ZStepDAQ_valueChanged(double arg1);
 
     void on_ZStepNum_valueChanged(double arg1);
+
+    void on_Source1Start_valueChanged(double arg1);
+
+    void on_Source1Step_valueChanged(double arg1);
+
+    void on_Source1NumofSteps_valueChanged(double arg1);
+
+
+
+    void on_Source2Start_valueChanged(double arg1);
+
+    void on_Source2Step_valueChanged(double arg1);
+
+    void on_Source2NumofSteps_valueChanged(double arg1);
 
 private:
     Ui::MainWindow *ui;

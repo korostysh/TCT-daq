@@ -7,8 +7,10 @@
 class TranslationStage : public Instrument
 {
 private:
-     PositionType   fPosition;
-     StageSpeedType fStageSpeed;
+     PositionType       fPosition;
+     StageSpeedType     fStageSpeed;
+     PositionStep       fPositionStep;
+     PositionNumofSteps fPositionNumofSteps;
 
 public:
     TranslationStage(ConnectionType pConectionType, std::string pAddress, std::string pName);
@@ -16,12 +18,17 @@ public:
     void Initialize();
 
     //Getters
-    PositionType     GetPosition();
-    StageSpeedType   GetStageSpeed();
+    PositionType        GetPosition();
+    StageSpeedType      GetStageSpeed();
+    PositionStep        GetPositionStep();
+    PositionNumofSteps  GetPositionNumofSteps();
+
 
     //Setters
-    void SetPosition          (PositionType pPosition);
-    void SetStageSpeed      (StageSpeedType pStageSpeed);
+    void SetPosition              (PositionType pPosition);
+    void SetStageSpeed            (StageSpeedType pStageSpeed);
+    void SetPositionStep          (PositionStep pPositionStep);
+    void SetPositionNumofSteps    (PositionNumofSteps pPositionNumofSteps);
 };
 
 #endif // TRANSLATIONSTAGE_H
