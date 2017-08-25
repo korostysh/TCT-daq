@@ -1,17 +1,56 @@
-[Instrument]
-TranslationStage
-USB
-192.76.172.134
-something
-[Instrument]
-Oscilloscope
-VICP
-192.76.172.134
-WaveForm1111
-[Instrument]
-VoltageSource
-USB
-192.76.172.134
-KEITHLEY
-
-
+[TranslationStage]
+InstrumentType= TranslationStage
+ConnectionType= USB
+Adress= 192.76.172.134
+Name= something
+X= -4
+Y= 4
+Z= 5
+XStart= 4
+YStart= 4
+ZStart= 33
+XSpeed= 27
+YSpeed= 10
+ZSpeed= 29
+XStep= 5
+YStep= 5
+ZStep= 3
+XStepDAQ= 5
+YStepDAQ= 7
+ZStepDAQ= 0.33
+XNumberOfSteps= 4
+YNumberOfSteps= 5
+ZNumberOfSteps= 3333
+StageDelay= 1
+[TranslationStageEnd]
+[Oscilloscope]
+InstrumentType= Oscilloscope
+ConnectionType= VICP
+Adress= 192.76.172.134
+Name= WaveForm
+[OscilloscopeEnd]
+[VoltageSource1]
+InstrumentType= VoltageSource1
+ConnectionType= USB
+Adress= 192.76.172.134
+Name= KEITHLEY1
+Bias= 4
+Delay= 8
+IncreaseStep= 4
+NumOfSteps= 3
+StartVoltage= 4
+StepVoltage= 4
+[VoltageSource1End]
+[VoltageSource2]
+InstrumentType= VoltageSource2
+ConnectionType= USB
+Adress= 192.76.172.135
+Name= KEITHLEY2
+Bias= 3
+Delay= 3
+IncreaseStep= 4
+NumOfSteps= 5
+StartVoltage= 4
+StepVoltage= 3
+[VoltageSource2End]
+[ENDCONFIG]

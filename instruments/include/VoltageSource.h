@@ -5,19 +5,26 @@
 
 class VoltageSource : public Instrument
 {
+private:
+    VoltageSourceStruct fVoltageParametrs;
+    VoltageDAQ          fVoltageDAQ;
+
 public:
     VoltageSource(ConnectionType pConectionType, std::string pAddress, std::string pName);
+    VoltageSource(InstrumentType pInstrumentType, ConnectionType pConectionType, std::string pAddress, std::string pName);
     ~VoltageSource() {
         ;
     }
     void Initialize();
     //Getters
-    VoltageSource GetVoltageParaemetrs();
+    VoltageSourceStruct GetVoltageParaemetrs();
+    VoltageDAQ          GetVoltageDAQParaemetrs();
 
     //Setters
 
     void SetVoltageParametrs(VoltageSourceStruct pVoltageParametrs);
-    void SetBias(float startvoltage, float finalvoltage, VoltageSourceStruct pVoltageParametrs);
+    void SetVoltageDAQParametrs(VoltageDAQ pVoltageDAQ);
+    void SetBias(float startvoltage, float finalvoltage, VoltageSourceStruct *pVoltageParametrs);
 
 
 

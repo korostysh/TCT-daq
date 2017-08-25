@@ -11,6 +11,14 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = TCT-daq
 TEMPLATE = app
 
+
+
+
+
+unix:CONFIG += no_keywords # Python redefines some qt keywords
+unix:INCLUDEPATH += /usr/include/python2.7
+unix:LIBS += -lpython2.7
+
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -30,7 +38,8 @@ SOURCES += \
     instruments/src/TranslationStage.cpp \
     src/TCTController.cpp \
     src/Convertor.cpp \
-    instruments/src/Oscilloscope.cpp
+    instruments/src/Oscilloscope.cpp \
+    instruments/src/VoltageSource.cpp
 
 HEADERS += \
         include/MainWindow.h \
@@ -39,7 +48,8 @@ HEADERS += \
     include/TCTController.h \
     include/Definition.h \
     include/Convertor.h \
-    instruments/include/Oscilloscope.h
+    instruments/include/Oscilloscope.h \
+    instruments/include/VoltageSource.h
 
 FORMS += \
         forms/MainWindow.ui

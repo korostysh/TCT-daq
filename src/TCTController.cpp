@@ -34,13 +34,9 @@ void TCTController::Initialize(std::vector<DAQConfig *> *pDAQConfigs)
                 //init oscilloscope
                 pInstrument = (Instrument*) new Oscilloscope(pConnectionType,pAddress,pName);
             }
-            else if (config_word->instrument_type == InstrumentType::VoltageSource1) {
+            else if (config_word->instrument_type == InstrumentType::VoltageSource1 || config_word->instrument_type == InstrumentType::VoltageSource2) {
                 //init voltagesource
-                pInstrument = (Instrument*) new VoltageSource(pConnectionType,pAddress,pName);
-            }
-            else if (config_word->instrument_type == InstrumentType::VoltageSource2) {
-                //init voltagesource
-                pInstrument = (Instrument*) new VoltageSource(pConnectionType,pAddress,pName);
+                pInstrument = (Instrument*) new VoltageSource(config_word->instrument_type,pConnectionType,pAddress,pName);
             }
             if(pInstrument != 0) {
                 pInstrument->Initialize();
@@ -77,7 +73,7 @@ Oscilloscope* TCTController::GetOscilloscope() {
     return 0;
 }
 
-VoltageSource* TCTController::GetVoltageSource1() {
+VoltageSource *TCTController::GetVoltageSource1() {
     for (auto pInstrument : *fInstruments) {
         if (pInstrument->GetInstrumentType() == InstrumentType::VoltageSource1) {
             return (VoltageSource*)pInstrument;

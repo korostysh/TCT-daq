@@ -14,6 +14,9 @@ void TranslationStage::Initialize() {
 PositionType TranslationStage::GetPosition(){
     return fPosition;
 }
+PositionType TranslationStage::GetStartPosition(){
+    return fStartPosition;
+}
 
 StageSpeedType TranslationStage::GetStageSpeed(){
     return fStageSpeed;
@@ -27,10 +30,22 @@ PositionStep TranslationStage::GetPositionStep(){
     return fPositionStep;
 }
 
+PositionStep TranslationStage::GetPositionStepDAQ(){
+    return fPositionStepDAQ;
+}
+
+float TranslationStage::GetStageDelay(){
+    return fStageDelay;
+}
+
 
 //Setters
 void TranslationStage::SetPosition(PositionType pPosition){
     fPosition = pPosition;
+}
+
+void TranslationStage::SetStartPosition(PositionType pStartPosition){
+    fStartPosition = pStartPosition;
 }
 
 void TranslationStage::SetStageSpeed(StageSpeedType pStageSpeed){
@@ -44,3 +59,13 @@ void TranslationStage::SetPositionNumofSteps(PositionNumofSteps pPositionNumofSt
 void TranslationStage::SetPositionStep(PositionStep pPositionStep){
     fPositionStep = pPositionStep;
 }
+
+void TranslationStage::SetPositionStepDAQ(PositionStep pPositionStepDAQ){
+    fPositionStepDAQ = pPositionStepDAQ;
+}
+
+void TranslationStage::SetStageDelay(float pStageDelay){
+    fStageDelay = pStageDelay;
+}
+
+

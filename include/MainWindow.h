@@ -9,6 +9,7 @@
 #include "QFile"
 #include "Python.h"
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -76,6 +77,10 @@ private Q_SLOTS:
 
     void on_Source2NumofSteps_valueChanged(double arg1);
 
+    void on_start_daq_clicked();
+
+    void on_save_config_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -83,11 +88,14 @@ private:
     std::vector<DAQConfig*> *fDAQConfigs = 0;
     std::map<std::string,QToolButton*> fStatuses;
 
+    void saveToFile(QFile *file);
     void LoadConfig(QFile *BaseConfig);
     void FillHardware();
     void ClearSoftware();
     void UpdateStatuses();
-
+    void SetDAQ_Parametrs_Stage (TranslationStage *pStage);
+    void SetDAQ_Parametrs_Voltage1(VoltageSource *pVoltageSource1);
+    void SetDAQ_Parametrs_Voltage2 (VoltageSource *pVoltageSource2);
     std::string GetConnectionTypeString(ConnectionType pConnectionType);
     std::string GetInstrumentTypeString(InstrumentType pInstrumentType);
     void EnableButtons();

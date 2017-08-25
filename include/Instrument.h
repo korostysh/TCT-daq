@@ -38,6 +38,7 @@ public:
     void SetStatus            (StatusType pStatus) { fStatus = pStatus; }
 
 
+
 };
 
 #endif // INSTRUMENT_H

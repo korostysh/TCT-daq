@@ -2,6 +2,8 @@
 #define DEFINITION_H
 #include <string>
 #include "QString"
+#include <chrono>
+#include <thread>
 
 enum class ConnectionType {GPIB, USB, TCPIP, VICP, UNKNOWN};
 enum class InstrumentType {VoltageSource1, VoltageSource2, Oscilloscope, TranslationStage, RotationStage, Laser, TemperatureController,Unknown};
@@ -17,6 +19,12 @@ struct VoltageSourceStruct {
     float bias;
     float increase_step;
     float delay;
+};
+
+struct VoltageDAQ {
+    float StartVoltage;
+    float StepVoltage;
+    float NumOfSteps;
 };
 
 struct StageSpeedType{
@@ -39,7 +47,7 @@ struct PositionStep {
 };
 
 struct PositionNumofSteps{
-    int xNumofSteps;
+    int xNumOfSteps;
     int yNumOfSteps;
     int zNumOfSteps;
 };
