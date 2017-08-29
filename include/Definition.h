@@ -4,6 +4,10 @@
 #include "QString"
 #include <chrono>
 #include <thread>
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <fstream>
 
 enum class ConnectionType {GPIB, USB, TCPIP, VICP, UNKNOWN};
 enum class InstrumentType {VoltageSource1, VoltageSource2, Oscilloscope, TranslationStage, RotationStage, Laser, TemperatureController,Unknown};

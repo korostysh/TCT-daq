@@ -58,6 +58,7 @@ TCTController::~TCTController()
 TranslationStage* TCTController::GetTranslationStage() {
     for (auto pInstrument : *fInstruments) {
         if (pInstrument->GetInstrumentType() == InstrumentType::TranslationStage) {
+
             return (TranslationStage*)pInstrument;
         }
     }

@@ -13,17 +13,21 @@
 #include <QDebug>
 #include "instruments/include/Oscilloscope.h"
 #include "instruments/include/VoltageSource.h"
-
+#include "include/qcustomplot.h"
+#include "QVector"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
     fDAQConfigs = new std::vector<DAQConfig*>;
     fTCTController = new TCTController;
     QFile *fConfFile = new QFile("BaseConfig.txt");
     LoadConfig(fConfFile);
+    //libusb_exit(NULL);
     delete fConfFile;
+
 
 }
 
@@ -31,7 +35,54 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+
     delete ui;
+
+}
+
+void MainWindow::Plot(std::vector<double> signal){
+
+
+    QVector<double> x(101), y(101); // initialize with entries 0..100
+    for (int i=0; i<101; ++i)
+    {
+      x[i] = i/50.0 - 1; // x goes from -1 to 1
+      y[i] = x[i]*x[i]; // let's plot a quadratic function
+    }
+    auto signalQVector = QVector<double>::fromStdVector(signal);
+    QVector<double> signalX(signalQVector.size());
+    for(int i = 0; i < signalQVector.size(); i++){
+        signalX[i] = i;
+    }
+    // create graph and assign data to it:
+    ui->customPlot->addGraph();
+    ui->customPlot->graph(0)->setData(signalX, signalQVector);
+    // give the axes some labels:
+    ui->customPlot->xAxis->setLabel("x");
+    ui->customPlot->yAxis->setLabel("y");
+    // set axes ranges, so we see all data:
+    ui->customPlot->xAxis->setRange(0, signalQVector.size());
+    ui->customPlot->yAxis->setRange(*std::min_element(signalQVector.begin(), signalQVector.end()),
+                                    *std::max_element(signalQVector.begin(), signalQVector.end()));
+    ui->customPlot->replot();
+    /*
+    QVector<float> x[signal.size()];
+    for (int i=0; i<signal.size(); ++i)
+    {
+
+      x.pushback(i+1.) ;
+    }
+    // create graph and assign data to it:
+    ui->customPlot->addGraph();
+    ui->customPlot->graph(0)->setData(x, y);
+    // give the axes some labels:
+    ui->customPlot->xAxis->setLabel("x");
+    ui->customPlot->yAxis->setLabel("signal");
+    // set axes ranges, so we see all data:
+    ui->customPlot->xAxis->setRange(1, x.size()+1);
+    ui->customPlot->yAxis->setRange(0, 10);
+    ui->customPlot->replot();
+    */
 }
 
 void MainWindow::LoadConfig(QFile *BaseConfig)
@@ -477,8 +528,32 @@ void MainWindow::SetDAQ_Parametrs_Stage (TranslationStage *pStage){
     pStagePosition.x = ui->XAxisPosition->value();
     pStagePosition.y = ui->YAxisPosition->value();
     pStagePosition.z = ui->ZAxisPosition->value();
+    if (libusb_init(NULL) < 0){
+        std::cerr<<"USBLib init error";
+        exit(1);
+    }
 
-    pStage->SetPosition(pStagePosition);
+    libusb_set_debug(NULL, 3);
+
+
+    Standa *XAxis = new Standa(8448);
+    Standa *YAxis = new Standa(8176);
+    Standa *ZAxis = new Standa(8353);
+
+
+
+    pStage->SetPosition(pStage, XAxis, YAxis, ZAxis, pStagePosition, pStage->GetStageSpeed());
+
+    PositionType pStageRealPosition = pStage->GetRealPosition(XAxis, YAxis, ZAxis);
+
+    ui->XAxisPosition->setValue(pStageRealPosition.x);
+    ui->YAxisPosition->setValue(pStageRealPosition.y);
+    ui->ZAxisPosition->setValue(pStageRealPosition.z);
+    delete XAxis;
+    delete YAxis;
+    delete ZAxis;
+     libusb_exit(NULL);
+
 
     pStageStartPosition.x = ui->XStart->value();
     pStageStartPosition.y = ui->YStart->value();
@@ -561,25 +636,46 @@ void MainWindow::on_SetCoordinate_clicked()
     pPosition.y = ui->YAxisPosition->value();
     pPosition.z = ui->ZAxisPosition->value();
 
+    for (auto cInstrument : *fTCTController->GetInstruments()) {
+        if(cInstrument->GetInstrumentType() == InstrumentType::TranslationStage){
+            if(cInstrument->GetStatus() == StatusType::Ready){
     TranslationStage *pStage = fTCTController->GetTranslationStage();
 
-    pStage->SetPosition(pPosition);
-    std::ostringstream ss;
-    ss << "X position = " << pStage->GetPosition().x << "   ";
-    ss << "Y position = " << pStage->GetPosition().y << "   ";
-    ss << "Z position = " << pStage->GetPosition().z << "   ";
+
+    ui->SetTranslationStageSpeed->clicked();
+    if (libusb_init(NULL) < 0){
+        std::cerr<<"USBLib init error";
+        exit(1);
+    }
+
+    libusb_set_debug(NULL, 3);
+
+    Standa *XAxis = new Standa(8448);
+    Standa *YAxis = new Standa(8176);
+    Standa *ZAxis = new Standa(8353);
 
 
+
+    pStage->SetPosition(pStage, XAxis, YAxis, ZAxis, pPosition, pStage->GetStageSpeed());
+
+
+    ui->XAxisPosition->setValue(pStage->GetRealPosition(XAxis, YAxis, ZAxis).x) ;
+    ui->YAxisPosition->setValue(pStage->GetRealPosition(XAxis, YAxis, ZAxis).y) ;
+    ui->ZAxisPosition->setValue(pStage->GetRealPosition(XAxis, YAxis, ZAxis).z) ;
+
+    delete XAxis;
+    delete YAxis;
+    delete ZAxis;
+    libusb_exit(NULL);
+            }
+        }
+    }
 }
 
 void MainWindow::on_SetTranslationStageSpeed_clicked()
 {
-    PositionType pPosition;
-    StageSpeedType pStageSpeed;
 
-    pPosition.x = ui->XAxisPosition->value();
-    pPosition.y = ui->YAxisPosition->value();
-    pPosition.z = ui->ZAxisPosition->value();
+    StageSpeedType pStageSpeed;
 
     pStageSpeed.xSpeed = ui->XSpeed->value();
     pStageSpeed.ySpeed = ui->YSpeed->value();
@@ -587,17 +683,11 @@ void MainWindow::on_SetTranslationStageSpeed_clicked()
 
     TranslationStage *pStage = fTCTController->GetTranslationStage();
 
-    pStage->SetPosition(pPosition);
+
+
     pStage->SetStageSpeed(pStageSpeed);
 
-    std::ostringstream ss;
-    ss << "X position = " << pStage->GetPosition().x << "   ";
-    ss << "Y position = " << pStage->GetPosition().y << "   ";
-    ss << "Z position = " << pStage->GetPosition().z << "   ";
 
-    ss << "X axis speed = " << pStage->GetStageSpeed().xSpeed << "   ";
-    ss << "Y axis speed = " << pStage->GetStageSpeed().ySpeed << "   ";
-    ss << "Z axis speed = " << pStage->GetStageSpeed().zSpeed << "   ";
 
 
 
@@ -620,36 +710,41 @@ void MainWindow::EnableButtons(){
 
 void MainWindow::on_MoveXMinus_clicked()
 {
+
+
      ui->XAxisPosition->setValue(ui->XAxisPosition->value()-ui->XStep->value());
-     ui->SetCoordinate->clicked(true);
+     ui->SetCoordinate->click();
+
+
+
 }
 
 void MainWindow::on_MoveXPlus_clicked()
 {
     ui->XAxisPosition->setValue(ui->XAxisPosition->value()+ui->XStep->value());
-    ui->SetCoordinate->clicked(true);
+    ui->SetCoordinate->click();
 }
 
 void MainWindow::on_MoveYMinus_clicked()
 {
     ui->YAxisPosition->setValue(ui->YAxisPosition->value()-ui->YStep->value());
-    ui->SetCoordinate->clicked(true);
+    ui->SetCoordinate->click();
 }
 void MainWindow::on_MoveYPlus_clicked()
 {
     ui->YAxisPosition->setValue(ui->YAxisPosition->value()+ui->YStep->value());
-    ui->SetCoordinate->clicked(true);
+    ui->SetCoordinate->click();
 }
 void MainWindow::on_MoveZMinus_clicked()
 {
     ui->ZAxisPosition->setValue(ui->ZAxisPosition->value()-ui->ZStep->value());
-    ui->SetCoordinate->clicked(true);
+    ui->SetCoordinate->click();
 }
 
 void MainWindow::on_MoveZPlus_clicked()
 {
     ui->ZAxisPosition->setValue(ui->ZAxisPosition->value()+ui->ZStep->value());
-    ui->SetCoordinate->clicked(true);
+    ui->SetCoordinate->click();
 }
 
 void MainWindow::on_initialize_clicked()
@@ -657,6 +752,9 @@ void MainWindow::on_initialize_clicked()
     fTCTController->Initialize(fDAQConfigs);
     UpdateStatuses();
     EnableButtons();
+
+
+
 
 }
 
@@ -847,21 +945,69 @@ void MainWindow::on_start_daq_clicked()
     TranslationStage *pStage = fTCTController->GetTranslationStage();
     VoltageSource    *pVoltageSource1 = fTCTController->GetVoltageSource1();
     VoltageSource    *pVoltageSource2 = fTCTController->GetVoltageSource2();
+    Oscilloscope     *pOscilloscope = fTCTController->GetOscilloscope();
 
     SetDAQ_Parametrs_Stage(pStage);
     SetDAQ_Parametrs_Voltage1(pVoltageSource1);
     SetDAQ_Parametrs_Voltage2(pVoltageSource2);
 
+
     StageSpeedType               pStageSpeed = pStage->GetStageSpeed();
     PositionStep                 pStageStep   = pStage->GetPositionStep();
     PositionNumofSteps           PStageNumberOfSteps = pStage->GetPositionNumofSteps();
-    PositionType                 pStagePosion = pStage->GetPosition();
+
+    if (libusb_init(NULL) < 0){
+        std::cerr<<"USBLib init error";
+        exit(1);
+    }
+
+    libusb_set_debug(NULL, 3);
+
+    Standa *XAxis = new Standa(8448);
+    Standa *YAxis = new Standa(8176);
+    Standa *ZAxis = new Standa(8353);
+
+    PositionType                 pStagePosion = pStage->GetRealPosition(XAxis, YAxis, ZAxis);
+    delete XAxis;
+    delete YAxis;
+    delete ZAxis;
+    libusb_exit(NULL);
     float                        pStageDelay = pStage->GetStageDelay();
     VoltageSourceStruct          pVoltageSource1Parameters = pVoltageSource1->GetVoltageParaemetrs();
     VoltageSourceStruct          pVoltageSource2Parameters = pVoltageSource2->GetVoltageParaemetrs();
     VoltageDAQ                   pVolageSource1DAQ = pVoltageSource1->GetVoltageDAQParaemetrs();
     VoltageDAQ                   pVolageSource2DAQ = pVoltageSource2->GetVoltageDAQParaemetrs();
 
+    bool Channel_1 = 1;
+    bool Channel_2 = 1;
+    bool Channel_3 = 1;
+    bool Channel_4 = 1;
+
+    std::string string = pOscilloscope->GetAddress();
+
+
+
+    std::vector<double> signal = pOscilloscope->GetOsccilloscopeSignals(Channel_1, Channel_2, Channel_3, Channel_4);
+
+    Plot(signal);
+
+    /*
+
+
+    }
+
+    QString data;
+
+    QString filename = "example.txt";
+        QFile file(filename);
+        if (file.open(QIODevice::ReadWrite)) {
+            QTextStream stream(&file);
+            data=stream.readAll();
+
+
+        }
+
+*/
 
 
 /*
@@ -911,7 +1057,22 @@ void MainWindow::saveToFile(QFile *file)
                 PositionStep                 pStageStep   = pStage->GetPositionStep();
                 PositionStep                 pStageStepDAQ   = pStage->GetPositionStepDAQ();
                 PositionNumofSteps           PStageNumberOfSteps = pStage->GetPositionNumofSteps();
-                PositionType                 pStagePosion = pStage->GetPosition();
+                if (libusb_init(NULL) < 0){
+                    std::cerr<<"USBLib init error";
+                    exit(1);
+                }
+
+                libusb_set_debug(NULL, 3);
+                Standa *XAxis = new Standa(8448);
+                Standa *YAxis = new Standa(8176);
+                Standa *ZAxis = new Standa(8353);
+
+                PositionType                 pStagePosion = pStage->GetRealPosition(XAxis, YAxis, ZAxis);
+
+                delete XAxis;
+                delete YAxis;
+                delete ZAxis;
+                libusb_exit(NULL);
                 PositionType                 pStageStartPosion = pStage->GetStartPosition();
                 float                        pStageDelay = pStage->GetStageDelay();
 
@@ -1041,3 +1202,4 @@ void MainWindow::saveToFile(QFile *file)
 
     outFile << "[ENDCONFIG]";
 }
+

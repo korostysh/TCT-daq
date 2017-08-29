@@ -3,18 +3,18 @@ InstrumentType= TranslationStage
 ConnectionType= USB
 Adress= 192.76.172.134
 Name= something
-X= -4
-Y= 4
-Z= 5
+X= -2730.62
+Y= 94.848
+Z= 599.04
 XStart= 4
 YStart= 4
 ZStart= 33
-XSpeed= 27
-YSpeed= 10
-ZSpeed= 29
-XStep= 5
-YStep= 5
-ZStep= 3
+XSpeed= 487
+YSpeed= 487
+ZSpeed= 487
+XStep= 100
+YStep= 100
+ZStep= 200
 XStepDAQ= 5
 YStepDAQ= 7
 ZStepDAQ= 0.33
@@ -26,7 +26,7 @@ StageDelay= 1
 [Oscilloscope]
 InstrumentType= Oscilloscope
 ConnectionType= VICP
-Adress= 192.76.172.134
+Adress= 192.168.1.2
 Name= WaveForm
 [OscilloscopeEnd]
 [VoltageSource1]

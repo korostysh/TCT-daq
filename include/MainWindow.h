@@ -7,7 +7,7 @@
 #include "include/TCTController.h"
 #include "include/Convertor.h"
 #include "QFile"
-#include "Python.h"
+//#include "Python.h"
 
 
 namespace Ui {
@@ -23,7 +23,7 @@ public:
 
 
 
-private Q_SLOTS:
+private slots:
 
     void on_SetCoordinate_clicked();
 
@@ -81,6 +81,8 @@ private Q_SLOTS:
 
     void on_save_config_clicked();
 
+
+
 private:
     Ui::MainWindow *ui;
 
@@ -88,6 +90,7 @@ private:
     std::vector<DAQConfig*> *fDAQConfigs = 0;
     std::map<std::string,QToolButton*> fStatuses;
 
+    void Plot(std::vector<double> signal);
     void saveToFile(QFile *file);
     void LoadConfig(QFile *BaseConfig);
     void FillHardware();
@@ -98,7 +101,8 @@ private:
     void SetDAQ_Parametrs_Voltage2 (VoltageSource *pVoltageSource2);
     std::string GetConnectionTypeString(ConnectionType pConnectionType);
     std::string GetInstrumentTypeString(InstrumentType pInstrumentType);
-    void EnableButtons();
+    void EnableButtons();   
+
 
 
 };

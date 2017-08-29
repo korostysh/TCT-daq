@@ -22,13 +22,91 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_state">
            <attribute name="title">
             <string>Tab 1</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_4">
+            <item row="1" column="1">
+             <layout class="QGridLayout" name="gridLayout_7">
+              <item row="2" column="1">
+               <widget class="QDoubleSpinBox" name="BiasStepV1"/>
+              </item>
+              <item row="0" column="2" colspan="2">
+               <widget class="QLabel" name="label_56">
+                <property name="text">
+                 <string>Voltage Source 2</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <widget class="QDoubleSpinBox" name="BiasV2"/>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_60">
+                <property name="text">
+                 <string>Increse Step [V]</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_58">
+                <property name="text">
+                 <string>Bias [V]</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QDoubleSpinBox" name="BiasV1"/>
+              </item>
+              <item row="2" column="2">
+               <widget class="QLabel" name="label_61">
+                <property name="text">
+                 <string>Increse Step [V]</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="label_59">
+                <property name="text">
+                 <string>Bias [V]</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="3">
+               <widget class="QDoubleSpinBox" name="BiasStepV2"/>
+              </item>
+              <item row="0" column="0" colspan="2">
+               <widget class="QLabel" name="label_55">
+                <property name="text">
+                 <string>Voltage Source 1</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QDoubleSpinBox" name="BiasDelayV1"/>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_62">
+                <property name="text">
+                 <string>Delay [s]</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2">
+               <widget class="QLabel" name="label_63">
+                <property name="text">
+                 <string>Delay [s]</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="3">
+               <widget class="QDoubleSpinBox" name="BiasDelayV2"/>
+              </item>
+             </layout>
+            </item>
             <item row="0" column="1">
              <layout class="QGridLayout" name="gridLayout">
               <item row="0" column="0">
@@ -79,6 +157,9 @@
                 </property>
                 <property name="minimum">
                  <double>-100000.000000000000000</double>
+                </property>
+                <property name="maximum">
+                 <double>100000.000000000000000</double>
                 </property>
                 <property name="value">
                  <double>0.000000000000000</double>
@@ -237,6 +318,12 @@
               </item>
               <item row="2" column="7">
                <widget class="QSlider" name="ZSpeed">
+                <property name="minimum">
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <number>5000</number>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -244,6 +331,12 @@
               </item>
               <item row="0" column="7">
                <widget class="QSlider" name="XSpeed">
+                <property name="minimum">
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <number>5000</number>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -258,6 +351,12 @@
               </item>
               <item row="1" column="7">
                <widget class="QSlider" name="YSpeed">
+                <property name="minimum">
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <number>5000</number>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -296,84 +395,6 @@
               </item>
              </layout>
             </item>
-            <item row="1" column="1">
-             <layout class="QGridLayout" name="gridLayout_7">
-              <item row="2" column="1">
-               <widget class="QDoubleSpinBox" name="BiasStepV1"/>
-              </item>
-              <item row="0" column="2" colspan="2">
-               <widget class="QLabel" name="label_56">
-                <property name="text">
-                 <string>Voltage Source 2</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="3">
-               <widget class="QDoubleSpinBox" name="BiasV2"/>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_60">
-                <property name="text">
-                 <string>Increse Step [V]</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_58">
-                <property name="text">
-                 <string>Bias [V]</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2">
-               <widget class="QLabel" name="label_61">
-                <property name="text">
-                 <string>Increse Step [V]</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QLabel" name="label_59">
-                <property name="text">
-                 <string>Bias [V]</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QDoubleSpinBox" name="BiasV1"/>
-              </item>
-              <item row="0" column="0" colspan="2">
-               <widget class="QLabel" name="label_55">
-                <property name="text">
-                 <string>Voltage Source 1</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="3">
-               <widget class="QDoubleSpinBox" name="BiasStepV2"/>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="label_62">
-                <property name="text">
-                 <string>Delay [s]</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2">
-               <widget class="QLabel" name="label_63">
-                <property name="text">
-                 <string>Delay [s]</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QDoubleSpinBox" name="BiasDelayV1"/>
-              </item>
-              <item row="3" column="3">
-               <widget class="QDoubleSpinBox" name="BiasDelayV2"/>
-              </item>
-             </layout>
-            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tab_config">
@@ -382,258 +403,7 @@
            </attribute>
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="0" column="0">
-             <layout class="QGridLayout" name="gridLayout_2">
-              <item row="0" column="5">
-               <widget class="QLabel" name="label_15">
-                <property name="text">
-                 <string>Voltage Source 1</string>
-                </property>
-               </widget>
-              </item>
-              <item row="10" column="1">
-               <spacer name="horizontalSpacer_5">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="label_14">
-                <property name="text">
-                 <string>Osciloscope</string>
-                </property>
-               </widget>
-              </item>
-              <item row="10" column="6">
-               <spacer name="horizontalSpacer_4">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="7" column="1">
-               <widget class="QCheckBox" name="Channel3">
-                <property name="text">
-                 <string>Channel 3</string>
-                </property>
-               </widget>
-              </item>
-              <item row="10" column="2">
-               <spacer name="horizontalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="6" column="1">
-               <widget class="QCheckBox" name="Channel2">
-                <property name="text">
-                 <string>Channel 2</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QLabel" name="label_17">
-                <property name="text">
-                 <string>Translation Stage</string>
-                </property>
-               </widget>
-              </item>
-              <item row="9" column="1">
-               <widget class="QCheckBox" name="Channel4">
-                <property name="text">
-                 <string>Channel 4</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2">
-               <widget class="QLabel" name="label_21">
-                <property name="text">
-                 <string>Connection Protocol</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLineEdit" name="lineEdit"/>
-              </item>
-              <item row="3" column="1">
-               <widget class="QLabel" name="label_20">
-                <property name="text">
-                 <string>Connection Protocol</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLabel" name="label_18">
-                <property name="text">
-                 <string>Adress</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="6">
-               <widget class="QLabel" name="label_16">
-                <property name="text">
-                 <string>Voltage Sorce 2</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="5">
-               <widget class="QLabel" name="label_24">
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QLabel" name="label_19">
-                <property name="text">
-                 <string>Adress</string>
-                </property>
-               </widget>
-              </item>
-              <item row="10" column="5">
-               <spacer name="horizontalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="5" column="1">
-               <widget class="QCheckBox" name="ChannelOne">
-                <property name="text">
-                 <string>Channel 1</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="6">
-               <widget class="QLabel" name="label_27">
-                <property name="text">
-                 <string>Connection Protocol</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="6">
-               <widget class="QLineEdit" name="lineEdit_8"/>
-              </item>
-              <item row="2" column="2">
-               <widget class="QLineEdit" name="lineEdit_3"/>
-              </item>
-              <item row="3" column="5">
-               <widget class="QLabel" name="label_26">
-                <property name="text">
-                 <string>Connection Protocol</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="5">
-               <widget class="QLineEdit" name="lineEdit_7"/>
-              </item>
-              <item row="1" column="6">
-               <widget class="QLabel" name="label_25">
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="3" colspan="2">
-               <widget class="QLabel" name="label_23">
-                <property name="text">
-                 <string>Connection Protocol</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="3" colspan="2">
-               <widget class="QLineEdit" name="lineEdit_5"/>
-              </item>
-              <item row="10" column="3" colspan="2">
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="1" column="3" colspan="2">
-               <widget class="QLabel" name="label_22">
-                <property name="text">
-                 <string>Adress</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3" colspan="2">
-               <widget class="QLabel" name="label_13">
-                <property name="text">
-                 <string>Laser</string>
-                </property>
-               </widget>
-              </item>
-              <item row="7" column="3">
-               <widget class="QPushButton" name="pushButton_4">
-                <property name="text">
-                 <string>On</string>
-                </property>
-               </widget>
-              </item>
-              <item row="7" column="4">
-               <widget class="QPushButton" name="pushButton_5">
-                <property name="text">
-                 <string>Off</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="3" colspan="2">
-               <widget class="QLabel" name="label_28">
-                <property name="text">
-                 <string>Frequency [Hz]</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="3" colspan="2">
-               <widget class="QSpinBox" name="spinBox">
-                <property name="maximum">
-                 <number>500000</number>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QComboBox" name="comboBox"/>
-              </item>
-              <item row="4" column="2">
-               <widget class="QComboBox" name="comboBox_2"/>
-              </item>
-              <item row="4" column="3" colspan="2">
-               <widget class="QComboBox" name="comboBox_3"/>
-              </item>
-             </layout>
+             <widget class="QCustomPlot" name="customPlot" native="true"/>
             </item>
            </layout>
           </widget>
@@ -1108,6 +878,14 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header location="global">include/qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
